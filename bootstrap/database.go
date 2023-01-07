@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"errors"
 	"fmt"
+	"go-api-demo/app/models/user"
 	"go-api-demo/pkg/config"
 	"go-api-demo/pkg/database"
 	"gorm.io/driver/mysql"
@@ -31,8 +32,8 @@ func SetupDB() {
 		})
 	case "sqlite":
 		//初始化 sqlite
-		database := config.Get("database.sqlite.database")
-		dbConfig = sqlite.Open(database)
+		sqliteDatabase := config.Get("database.sqlite.database")
+		dbConfig = sqlite.Open(sqliteDatabase)
 	default:
 		panic(errors.New("database connection not supported"))
 	}
@@ -47,4 +48,9 @@ func SetupDB() {
 
 	//设置每个连接的过期时间
 	database.SQLDB.SetConnMaxLifetime(time.Duration(config.GetInt("database.mysql.max_life_seconds")))
+
+	err := database.DB.AutoMigrate(&user.User{})
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 }
