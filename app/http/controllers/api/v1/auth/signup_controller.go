@@ -6,7 +6,7 @@ import (
 	v1 "go-api-demo/app/http/controllers/api/v1"
 	"go-api-demo/app/models/user"
 	"go-api-demo/app/requests"
-	"net/http"
+	"go-api-demo/pkg/response"
 )
 
 // SignupController 注册控制器
@@ -23,7 +23,7 @@ func (sc *SignupController) IsPhoneExist(c *gin.Context) {
 	}
 
 	//2. 检查数据库并返回响应
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsPhoneExist(request.Phone),
 	})
 }
@@ -37,7 +37,7 @@ func (sc *SignupController) IsEmailExist(c *gin.Context) {
 	}
 
 	//2. 检查数据库并返回响应
-	c.JSON(http.StatusOK, gin.H{
+	response.JSON(c, gin.H{
 		"exist": user.IsEmailExist(request.Email),
 	})
 }
