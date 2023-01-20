@@ -13,7 +13,7 @@ type User struct {
 	Name     string `gorm:"column:name;type:varchar(60)" json:"name,omitempty"`
 	Email    string `gorm:"column:email;type:varchar(60)" json:"-"`
 	Phone    string `gorm:"column:phone;type:varchar(20)" json:"-"`
-	Password string `gorm:"column:password;type:char(32)" json:"-"`
+	Password string `gorm:"column:password;type:char(60)" json:"-"`
 
 	models.CommonTimestampsField
 }
@@ -26,4 +26,9 @@ func (userModel *User) Create() {
 // ComparePassword 密码是否正确
 func (userModel *User) ComparePassword(_password string) bool {
 	return hash.BcryptCheck(_password, userModel.Password)
+}
+
+func (userModel *User) Save() (rowsAffected int64) {
+	result := database.DB.Save(&userModel)
+	return result.RowsAffected
 }
