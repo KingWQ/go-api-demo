@@ -19,7 +19,7 @@ type Migrator struct {
 // Migration 对应数据的 migrations 表里的一条数据
 type Migration struct {
 	ID        uint64 `gorm:"primaryKey;autoIncrement;"`
-	Migration string `gorm:"type:varchar(255);not null;unique;"`
+	Migration string `gorm:"type:varchar(100);not null;unique;"`
 	Batch     int
 }
 
